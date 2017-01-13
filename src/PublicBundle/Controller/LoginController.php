@@ -73,7 +73,7 @@ class LoginController extends Controller
     public function loginSetAction()
     {
         return $this->render(
-            'PublicBundle:Main:loginq.html.twig',
+            'PublicBundle:Main:loginTest.html.twig',
             array('error' => '')
         );
         // $_userInfo = $this->get('security.context')->getToken()->getUser();
