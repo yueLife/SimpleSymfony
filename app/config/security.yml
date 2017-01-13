@@ -1,11 +1,13 @@
 # To get started with security, check out the documentation:
-# http://symfony.com/doc/current/security.html
+# http://symfony.com/doc/current/book/security.html
 security:
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        users_provider:
+            entity:
+                class: PublicBundle:Users
+                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,12 +15,35 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        # main:
+        #     anonymous: ~
+        #     # activate different ways to authenticate
+
+        #     http_basic: ~
+        #     # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+        login_firewall:
+            pattern:   ^/public/login$
             anonymous: ~
-            # activate different ways to authenticate
+        secured_area:
+            pattern:   ^/pu*
+            form_login:
+                login_path: /public/login
+                check_path: /public/loginCheck
+                # 登录后的目标页
+                default_target_path: /loginSet
+                # 登录后是否总是跳向指定目标页
+                always_use_default_target_path: true
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            provider: users_provider
+
+    access_control:
+        # require ROLE_ADMIN for /admin*
+        - { path: ^/admin*, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/unusedWords*, roles: ROLE_UNUSED_WORDS }
+        - { path: ^/goodsPick*, roles: ROLE_GOODS_PICK }
+
+    encoders:
+        PublicBundle\Entity\Users:
+            algorithm:  bcrypt
