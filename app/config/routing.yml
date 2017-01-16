@@ -23,8 +23,8 @@ app:
     type:     annotation
 
 loginRoute:
-  path: /public/login
+  path: /login
   defaults: { _controller: PublicBundle:Login:login }
 
 loginCheck:
-  path: /public/loginCheck
+  path: /loginCheck

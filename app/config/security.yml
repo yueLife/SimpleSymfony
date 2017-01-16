@@ -23,13 +23,13 @@ security:
         #     # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
         login_firewall:
-            pattern:   ^/public/login$
+            pattern:   ^/(login$|public/*)
             anonymous: ~
         secured_area:
-            pattern:   ^/pu*
+            pattern:   ^/
             form_login:
-                login_path: /public/login
-                check_path: /public/loginCheck
+                login_path: /login
+                check_path: /loginCheck
                 # 登录后的目标页
                 default_target_path: /loginSet
                 # 登录后是否总是跳向指定目标页

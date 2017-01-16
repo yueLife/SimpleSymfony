@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Security;
 class LoginController extends Controller
 {
     /**
-     * @Route("/public/login", name="loginRoute")
+     * @Route("/login", name="loginRoute")
      */
     public function loginAction(Request $request)
     {
@@ -43,7 +43,7 @@ class LoginController extends Controller
     }
 
     /**
-     * @Route("/public/login_check", name="loginCheck")
+     * @Route("/login_check", name="loginCheck")
      */
     public function loginCheckAction()
     {
@@ -68,14 +68,10 @@ class LoginController extends Controller
     /**
      * 登录成功后，所要的操作
      *
-     * @Route("/pus/loginSet", name="loginSet")
+     * @Route("/loginSet", name="loginSet")
      */
     public function loginSetAction()
     {
-        return $this->render(
-            'PublicBundle:Main:loginTest.html.twig',
-            array('error' => '')
-        );
         // $_userInfo = $this->get('security.context')->getToken()->getUser();
         // $em = $this->getDoctrine()->getEntityManager();
         // $userInfo = $em->getRepository('HuoBundle\Entity\Users')->findOneById($_userInfo->getId());
