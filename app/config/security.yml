@@ -40,9 +40,9 @@ security:
 
     access_control:
         # require ROLE_ADMIN for /admin*
-        - { path: ^/admin*, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin*,       roles: ROLE_SUPER_ADMIN }
         - { path: ^/unusedWords*, roles: ROLE_UNUSED_WORDS }
-        - { path: ^/goodsPick*, roles: ROLE_GOODS_PICK }
+        - { path: ^/goodsPick*,   roles: ROLE_GOODS_PICK }
 
     encoders:
         PublicBundle\Entity\Users:
