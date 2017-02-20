@@ -10,4 +10,4 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     toolsService:
         class:     %toolsService.class%
-        arguments: [tools]
+        arguments: [@Templating, @Mailer]

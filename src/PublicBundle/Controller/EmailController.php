@@ -2,7 +2,6 @@
 
 namespace PublicBundle\Controller;
 
-
 use PublicBundle\Entity\SendEmails;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,36 +33,28 @@ class EmailController extends Controller
                 'msg' => '邮箱验证失败请检查邮箱地址！'
             ));
         } else {
+            $username = $userInfo->getUsername();
+            $salt = $this->get('toolsService')->getRandCharService(4);
+            $token = hash('sha512', $username.$salt.'joywell');
+
+            $sendEmailInfo = new SendEmails();
+            $sendEmail = $sendEmailInfo->setUid($userInfo->getId())->setUsername($username)->setEmail($email)->setToken($token)->setSalt($salt)->setCreateTime(time());
+            $em->persist($sendEmailInfo);
+            $em->flush();
+
+            $emailData['subject'] = '邮箱验证重置密码';
+            $emailData['emailAdd'] = $email;
+            $emailData['view'] = 'PublicBundle:Main/Emails:forgetPassword.html.twig';
+            $emailData['arr'] = array(
+                'username' => $username,
+                'token' => $token,
+            );
+
+            $this->get('toolsService')->sendEmailService($emailData);
             return new JsonResponse(array(
                 'state' => true,
                 'msg' => '邮件发送成功！请查收！'
             ));
         }
-//        $username = $userInfo->getUsername();
-//        $salt = $this->get('toolsService')->getRandChar(4);
-//        $token = hash('sha512', $username.$salt.'joywell');
-//
-//        $sendEmailInfo = new SendEmails();
-//        $sendEmail = $sendEmailInfo->setUid($userInfo->getId())->setUsername($username)->setEmail($email)->setToken($token)->setSalt($salt)->setCreateTime(time());
-//        $em->persist($sendEmailInfo);
-//        $em->flush();
-//
-//        $message = \Swift_Message::newInstance()
-//            ->setSubject('邮箱验证重置密码')
-//            ->setFrom('wiki@joywell.com.cn')
-//            ->setTo($email)
-//            ->setBody(
-//                $this->renderView(
-//                    'PublicBundle:Main/Emails:forgetPassword.html.twig',
-//                    array(
-//                        'username' => $username,
-//                        'token' => $token,
-//                    )
-//                ),
-//                'text/html'
-//            );
-//        $this->get('mailer')->send($message);
-
-        return new JsonResponse(array('state' => 'success'));
     }
 }

@@ -5,13 +5,16 @@ namespace PublicBundle\Services;
 class ToolsService
 {
     private $function = array(
-        'getRandChar'
+        'getRandCharService',
+        'sendEmailService',
     );
-    private $tools;
+    private $templating;
+    private $mailer;
 
-    public function __construct($tools)
+    public function __construct($templating, $mailer)
     {
-        $this->tools = $tools;
+        $this->templating = $templating;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -20,7 +23,7 @@ class ToolsService
      *
      * @return string $str 字符串
      */
-    public function getRandChar($length)
+    public function getRandCharService($length)
     {
         $str = null;
         $strPol = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -31,5 +34,25 @@ class ToolsService
         }
 
         return $str;
+    }
+
+    /**
+     * 发送一封邮件
+     * @param array $emailData 待发邮件数据
+     *
+     */
+    public function sendEmailService($emailData){
+        $message = \Swift_Message::newInstance()
+            ->setSubject($emailData['subject'])
+            ->setFrom('wiki@joywell.com.cn')
+            ->setTo($emailData['emailAdd'])
+            ->setBody(
+                $this->templating->render(
+                    $emailData['view'],
+                    $emailData['arr']
+                ),
+                'text/html'
+            );
+        $this->mailer->send($message);
     }
 }
