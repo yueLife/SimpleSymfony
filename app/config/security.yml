@@ -34,15 +34,18 @@ security:
                 default_target_path: /loginSet
                 # 登录后是否总是跳向指定目标页
                 always_use_default_target_path: true
+            remember_me:
+                key:      "%secret%"
+                lifetime: 604800 # A week
+                path:     /
 
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
             provider: users_provider
 
     access_control:
-        # require ROLE_ADMIN for /admin*
-        - { path: ^/admin*,       roles: ROLE_SUPER_ADMIN }
-        - { path: ^/unusedWords*, roles: ROLE_UNUSED_WORDS }
-        - { path: ^/goodsPick*,   roles: ROLE_GOODS_PICK }
+        - { path: ^/admin*, roles: ROLE_ADMIN_USER }
+        - { path: ^/words*, roles: [ROLE_WORDS_USER, ROLE_ADMIN_USER] }
+        - { path: ^/goods*, roles: [ROLE_GOODS_USER, ROLE_ADMIN_USER] }
 
     encoders:
         PublicBundle\Entity\Users:

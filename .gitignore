@@ -47,6 +47,6 @@
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
 
-#PhpStorm
-/.idea
 *~
+# PhpStorm
+.idea*

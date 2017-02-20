@@ -1,0 +1,80 @@
+{% extends "PublicBundle:Global:base.html.twig" %}
+
+{% block head %}
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" type="text/css" />
+    {% stylesheets output='css/main/globalMandatory.css'
+        '@PublicBundle/Resources/public/metronic/assets/global/plugins/font-awesome/css/font-awesome.min.css'
+        '@PublicBundle/Resources/public/metronic/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'
+        '@PublicBundle/Resources/public/metronic/assets/global/plugins/bootstrap/css/bootstrap.min.css'
+        '@PublicBundle/Resources/public/metronic/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    {% block pageLevelPluginsStyle %}{% endblock %}
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    {#{% stylesheets filter='cssrewrite' output='css/main/themeGlobal.css'#}
+    {% stylesheets filter='cssrewrite' output='css/main/themeGlobal.css'
+        'bundles/public/metronic/assets/global/css/components-rounded.min.css'
+        '@PublicBundle/Resources/public/metronic/assets/global/css/plugins.min.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {#'bundles/public/metronic/assets/global/css/components-rounded.min.css'#}
+    {% endstylesheets %}
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    {% block pageLevelStyles %}{% endblock %}
+    <!-- END PAGE LEVEL STYLES -->
+
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    {% block themeLayoutStyles %}{% endblock %}
+    <!-- END THEME LAYOUT STYLES -->
+{% endblock %}
+
+{% block body %}
+    {% block content %}{% endblock %}
+    {% block footer %}{% endblock %}
+
+    {% block javascripts %}
+        <!-- BEGIN CORE PLUGINS -->
+        {% javascripts filter='jsqueeze' output='js/main/corePlugins.js'
+            '//cdn.bootcss.com/jquery/2.2.4/jquery.min.js'
+            '@PublicBundle/Resources/public/metronic/assets/global/plugins/bootstrap/js/bootstrap.min.js'
+            '@PublicBundle/Resources/public/metronic/assets/global/plugins/js.cookie.min.js'
+            '@PublicBundle/Resources/public/metronic/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js'
+            '@PublicBundle/Resources/public/metronic/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js'
+            '@PublicBundle/Resources/public/metronic/assets/global/plugins/jquery.blockui.min.js'
+            '@PublicBundle/Resources/public/metronic/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'
+        %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+        {% endjavascripts %}
+        <!-- END CORE PLUGINS -->
+
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        {% block pageLevelPluginsScript %}{% endblock %}
+        <!-- END PAGE LEVEL PLUGINS -->
+
+        <!-- BEGIN THEME GLOBAL SCRIPTS -->
+        <script src="{{ asset(METRONIC_GLOBAL~'scripts/app.min.js') }}" type="text/javascript"></script>
+        <!-- END THEME GLOBAL SCRIPTS -->
+
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        {% block pageLevelScripts %}{% endblock %}
+        <!-- END PAGE LEVEL SCRIPTS -->
+
+        <!-- BEGIN THEME LAYOUT SCRIPTS -->
+        {% block themeLayoutScripts %}{% endblock %}
+        <!-- END THEME LAYOUT SCRIPTS -->
+    {% endblock %}
+    </body>
+{% endblock %}
+
+
+
+

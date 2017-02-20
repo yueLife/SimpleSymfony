@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Security;
 
-// use HuoBundle\Entity\Users;
-
 class LoginController extends Controller
 {
     /**
@@ -36,9 +34,26 @@ class LoginController extends Controller
 
         $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
 
+        $errorMsg = '';
+        if ($error) {
+            switch ($error->getLine()) {
+                case 42:
+                    $errorMsg = '用户 '.$lastUsername . ' 已被禁用！请联系管理员。'; break;
+                case 73:
+                    $errorMsg = '用户名错误！请重新输入用户名。'; break;
+                case 90:
+                    $errorMsg = '密码错误！请重新输入密码。'; break;
+                default:
+                    $errorMsg = '未知错误！请联系管理员！'; break;
+            }
+        }
+
         return $this->render(
             'PublicBundle:Main:login.html.twig',
-            array('error' => $error)
+            array(
+                'last_username' => $lastUsername,
+                'errorMsg' => $errorMsg
+            )
         );
     }
 
@@ -61,7 +76,10 @@ class LoginController extends Controller
         $this->getRequest()->getSession()->clear();
         return $this->render(
             'PublicBundle:Main:login.html.twig',
-            array('error' => '')
+            array(
+                'last_username' => '',
+                'errorMsg' => ''
+            )
         );
     }
 
@@ -72,23 +90,27 @@ class LoginController extends Controller
      */
     public function loginSetAction()
     {
-        // $_userInfo = $this->get('security.context')->getToken()->getUser();
-        // $em = $this->getDoctrine()->getEntityManager();
-        // $userInfo = $em->getRepository('HuoBundle\Entity\Users')->findOneById($_userInfo->getId());
+        $_userInfo = $this->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getEntityManager();
+        $userInfo = $em->getRepository('PublicBundle\Entity\Users')->findOneById($_userInfo->getId());
 
-        // // 存储信息到session
-        // $session = $this->getRequest()->getSession();
-        // $session->set('time', $userInfo->getLastLogin());
-        // $session->set('personSet', $userInfo->getPersonSet());
+        // 存储信息到session
+        $session = $this->getRequest()->getSession();
+        $session->set('time', $userInfo->getLastLogin());
 
-        // // 更新用户信息
-        // $userInfo->setLastLogin(date('Y/m/d H:i:s', time()));
-        // $em->flush();
+        // 更新用户信息
+        $userInfo->setLastLogin(date('Y/m/d H:i:s', time()));
+        $em->flush();
 
-        // if ($_userInfo->getRole() == 'ROLE_SUPER_ADMIN') {
-        //     return $this->redirect($this->generateUrl('adminIndex'));
-        // }else{
-        //     return $this->redirect($this->generateUrl('home'));
-        // }
+        switch ($_userInfo->getRole()) {
+            case 'ROLE_ADMIN_USER':
+                return $this->redirect($this->generateUrl('adminIndex')); break;
+            case 'ROLE_WORDS_USER':
+                return $this->redirect($this->generateUrl('wordsIndex')); break;
+            case 'ROLE_GOODS_USER':
+                return $this->redirect($this->generateUrl('goodsIndex')); break;
+            default:
+                return $this->redirect($this->generateUrl('publicIndex')); break;
+        }
     }
 }
