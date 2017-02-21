@@ -19,18 +19,18 @@ class EmailController extends Controller
     /**
      * @Route("/forgetPassword", name="forgetPassword")
      */
-    public function forgetPasswordAction()
+    public function forgetPasswordAction(Request $request)
     {
-        $email = $this->getRequest()->request->get('email');
+        $email = $request->get('email');
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $usersEm = $em->getRepository('PublicBundle\Entity\Users');
         $userInfo = $usersEm->findOneByEmail($email);
 
         if (!$userInfo) {
             return new JsonResponse(array(
                 'state' => false,
-                'msg' => '邮箱验证失败请检查邮箱地址！'
+                'msg' => '邮箱验证失败或未注册，请检查邮箱地址！'
             ));
         } else {
             $username = $userInfo->getUsername();
@@ -38,7 +38,7 @@ class EmailController extends Controller
             $token = hash('sha512', $username.$salt.'joywell');
 
             $sendEmailInfo = new SendEmails();
-            $sendEmail = $sendEmailInfo->setUid($userInfo->getId())->setUsername($username)->setEmail($email)->setToken($token)->setSalt($salt)->setCreateTime(time());
+            $sendEmailInfo->setUid($userInfo->getId())->setUsername($username)->setEmail($email)->setToken($token)->setSalt($salt)->setCreateTime(time());
             $em->persist($sendEmailInfo);
             $em->flush();
 
@@ -56,5 +56,26 @@ class EmailController extends Controller
                 'msg' => '邮件发送成功！请查收！'
             ));
         }
+    }
+
+    /**
+     * @Route("/resetPassword", name="resetPassword")
+     */
+    public function resetPasswordAction(Request $request)
+    {
+        $token = $request->get('token');
+        $password = $request->get('password');
+        $em = $this->getDoctrine()->getManager();
+        $emailEm = $em->getRepository('PublicBundle\Entity\SendEmails');
+        $usersEm = $em->getRepository('PublicBundle\Entity\Users');
+
+        $uid = $emailEm->findOneByToken($token)->getUid();
+        $usersEm->findOneById($uid)->setPassword(password_hash($password, PASSWORD_BCRYPT));
+        $em->flush();
+
+        return new JsonResponse(array(
+            'state' => true,
+            'msg' => '修改成功！请重新登录！'
+        ));
     }
 }

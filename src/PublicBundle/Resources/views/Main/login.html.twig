@@ -25,11 +25,12 @@
         <div class="row bs-reset">
             <div class="col-md-6 bs-reset">
                 <div class="login-bg" style="background-image:url({{ asset('bundles/public/images/login/bg1.jpg') }})">
-                    <img class="login-logo" src="{{ asset('bundles/public/images/logo130_32.png') }}" /> </div>
+                    <a href="{{ path('publicIndex') }}"><img class="login-logo" src="{{ asset('bundles/public/images/logo130_32.png') }}" /> </a>
+                </div>
             </div>
             <div class="col-md-6 login-container bs-reset">
                 <div class="login-content">
-                    <h1> 上海悦维工具系统登录 </h1>
+                    <h1> {{ GLOBAL_TITLE }}登录 </h1>
                     <form action="{{ path('loginCheck') }}" class="login-form" method="post">
                         <div class="alert alert-danger display-hide login-alert">
                             <button class="close" data-close="alert"></button>
@@ -96,7 +97,7 @@
                         </div>
                         <div class="col-xs-7 bs-reset">
                             <div class="login-copyright text-right">
-                                <p> Copyright © {{ "now" | date("Y") }} 技术支持：上海悦维技术部 {% include "PublicBundle::Footer/version.html.twig" %} </p>
+                                <p> Copyright © {{ "now" | date("Y") }} {{ COPYWRITE }} {% include "PublicBundle::Footer/version.html.twig" %} </p>
                             </div>
                         </div>
                     </div>
@@ -128,9 +129,9 @@
             {% if errorMsg %}
             $('.login-alert').fadeIn().find('span').html('{{ errorMsg }}');
             {% endif %}
-            $(document).on('click', '.login-btn', function () {
+            $(document).on('click', '.login-btn', function() {
                 var errorFlag = true;
-                $('.login-form input').each(function (index, el) {
+                $('.login-form input').each(function(index, el) {
                     if ($(this).val() == '') {
                         $(this).focus();
                         errorFlag = false;
@@ -139,7 +140,7 @@
                 });
                 errorFlag ? $(this).attr('type', 'submit') : $('.login-alert').fadeIn().find('span').html('请输入您的用户名和密码！');
             });
-            $(document).on('click', '.forgetPasswd-btn', function (event) {
+            $(document).on('click', '.forgetPasswd-btn', function(event) {
                 var email = $('input[name="email"]').val();
                 if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
                     $('.forget-alert').attr('class', 'alert forget-alert alert-danger').find('p').html(' 邮箱格式不正确！请重新输入 ');
@@ -150,15 +151,14 @@
                         type: 'post',
                         dataType: 'json',
                         data: {'email': email},
-                    }).done(function (data) {
+                    }).done(function(data) {
                         var _data = data.state ? 'alert-success' : 'alert-danger'
                         $('.forget-alert').attr('class', 'alert forget-alert ' + _data).find('p').html(' ' + data.msg + ' ');
-                    }).fail(function () {
+                    }).fail(function() {
                         console.log("未知错误！");
                     })
                 }
             });
-
         })
     </script>
 {% endblock %}

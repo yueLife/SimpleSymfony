@@ -68,12 +68,12 @@ class LoginController extends Controller
     /**
      * @Route("/logout", name="logout")
      */
-    public function logoutAction()
+    public function logoutAction(Request $request)
     {
         // 删除用户信息
         $this->get('security.context')->setToken(null);
         // 删除 session中的信息
-        $this->getRequest()->getSession()->clear();
+        $request->getSession()->clear();
         return $this->render(
             'PublicBundle:Main:login.html.twig',
             array(
@@ -88,14 +88,14 @@ class LoginController extends Controller
      *
      * @Route("/loginSet", name="loginSet")
      */
-    public function loginSetAction()
+    public function loginSetAction(Request $request)
     {
         $_userInfo = $this->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $userInfo = $em->getRepository('PublicBundle\Entity\Users')->findOneById($_userInfo->getId());
 
         // 存储信息到session
-        $session = $this->getRequest()->getSession();
+        $session = $request->getSession();
         $session->set('time', $userInfo->getLastLogin());
 
         // 更新用户信息
