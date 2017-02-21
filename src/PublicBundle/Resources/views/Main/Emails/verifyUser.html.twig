@@ -3,7 +3,7 @@
 {% block head %}
     {{ parent() }}
     <style>
-        .alert a{color:#3598dc !important;}
+        .alert a{ color:#3598dc !important; }
     </style>
 {% endblock %}
 
@@ -56,7 +56,8 @@
             </div>
         {% endif %}
     </div>
-    <div class="copyright"> <p> Copyright © {{ "now" | date("Y") }} {{ COPYWRITE }} {% include "PublicBundle::Footer/version.html.twig" %} </p> </div>
+    <div class="copyright">
+        <p> Copyright © {{ "now" | date("Y") }} {{ COPYWRITE }} {% include "PublicBundle::Footer/version.html.twig" %} </p>
     </div>
 {% endblock %}
 
@@ -79,6 +80,7 @@
     <script src="{{ asset(METRONIC_PAGES~'scripts/login.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
+            {% if data.state %}
             $(document).on('click', '.reset-password', function() {
                 var token = '{{ token }}';
                 var _input = $('.login-form input');
@@ -102,7 +104,6 @@
                         dataType: 'json',
                         data: {'token': '{{ token }}', 'password': _input.eq(0).val()},
                     }).done(function(data) {
-                        console.log(data);
                         if (data.state) {
                             $('.alert').attr('class', 'alert alert-success display-hide').fadeIn().find('span').html(data.msg);
                             setTimeout(function() {
@@ -116,7 +117,7 @@
                 }
                 $('.alert').fadeIn().find('span').html(msg);
             });
-            {% if not data.state %}
+            {% else %}
             setTimeout(function() {
                 window.location.href = '{{ path('loginRoute') }}';
             }, 3000);
