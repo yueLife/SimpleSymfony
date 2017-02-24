@@ -8,12 +8,8 @@
 {% endblock %}
 
 {% block pageLevelPlugins %}
-    {% stylesheets output='css/login/pageLevelPlugins.css'
-        '@PublicBundle/Resources/public/metronic/assets/global/plugins/select2/css/select2.min.css'
-        '@PublicBundle/Resources/public/metronic/assets/global/plugins/select2/css/select2-bootstrap.min.css'
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-    {% endstylesheets %}
+    <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/select2/css/select2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/select2/css/select2-bootstrap.min.css') }}" type="text/css" />
 {% endblock %}
 
 {% block pageLevelStyles %}
@@ -25,7 +21,7 @@
         <div class="row bs-reset">
             <div class="col-md-6 bs-reset">
                 <div class="login-bg" style="background-image:url({{ asset('bundles/public/images/login/bg1.jpg') }})">
-                    <a href="{{ path('publicIndex') }}"><img class="login-logo" src="{{ asset('bundles/public/images/logo130_32.png') }}" /> </a>
+                    <a href="{{ path('publicIndex') }}"><img class="login-logo" src="{{ asset(PUBLIC_IMAGES~'logo130_32.png') }}" /> </a>
                 </div>
             </div>
             <div class="col-md-6 login-container bs-reset">
@@ -112,14 +108,10 @@
 {% endblock %}
 
 {% block pageLevelPluginsScript %}
-    {% javascripts filter='jsqueeze' output='js/login/pageLevelPlugins.js'
-        '@PublicBundle/Resources/public/metronic/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
-        '@PublicBundle/Resources/public/metronic/assets/global/plugins/jquery-validation/js/additional-methods.min.js'
-        '@PublicBundle/Resources/public/metronic/assets/global/plugins/select2/js/select2.full.min.js'
-        '@PublicBundle/Resources/public/metronic/assets/global/plugins/backstretch/jquery.backstretch.min.js'
-    %}
-    <script src="{{ asset_url }}" type="text/javascript"></script>
-    {% endjavascripts %}
+    <script src="{{ asset(METRONIC_GLOBAL~'plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset(METRONIC_GLOBAL~'plugins/jquery-validation/js/additional-methods.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset(METRONIC_GLOBAL~'plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset(METRONIC_GLOBAL~'plugins/backstretch/jquery.backstretch.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block pageLevelScripts %}

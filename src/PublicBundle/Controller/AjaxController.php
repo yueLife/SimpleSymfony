@@ -12,14 +12,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
- * @Route("/public/ajax/email")
+ * @Route("/public/ajax")
  */
-class EmailController extends Controller
+class AjaxController extends Controller
 {
     /**
-     * @Route("/forgetPassword", name="forgetPassword")
+     * @Route("/email/forgetPassword", name="forgetPassword")
      */
-    public function forgetPasswordAction(Request $request)
+    public function forgetPasswordAjax(Request $request)
     {
         $email = $request->get('email');
 
@@ -59,9 +59,9 @@ class EmailController extends Controller
     }
 
     /**
-     * @Route("/resetPassword", name="resetPassword")
+     * @Route("/email/resetPassword", name="resetPassword")
      */
-    public function resetPasswordAction(Request $request)
+    public function resetPasswordAjax(Request $request)
     {
         $token = $request->get('token');
         $password = $request->get('password');

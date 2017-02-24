@@ -9,10 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
  * @Route("/goods")
  */
-class IndexController extends Controller
+class GoodsController extends Controller
 {
     /**
-     * @Route("/hello", name="goodsIndex")
+     * @Route("/index", name="goodsIndex")
      * @Template("GoodsPickBundle:Main:index.html.twig")
      */
     public function indexAction()

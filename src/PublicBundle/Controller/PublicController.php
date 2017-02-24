@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/public")
  */
-class IndexController extends Controller
+class PublicController extends Controller
 {
     /**
-     * @Route("/hello", name="publicIndex")
+     * @Route("/index", name="publicIndex")
      * @Template("PublicBundle:Main:index.html.twig")
      */
     public function indexAction()
@@ -22,16 +22,16 @@ class IndexController extends Controller
     }
 
     /**
-     * @Route("/verify", name="verifyUser")
-     * @Template("PublicBundle:Main/Emails:verifyUser.html.twig")
+     * @Route("/verifyToken", name="verifyToken")
+     * @Template("PublicBundle:Main/Emails:verifyToken.html.twig")
      */
-    public function verifyUserAction(Request $request)
+    public function verifyTokenAction(Request $request)
     {
         $token = $email = $request->get('token');
         if (!$token) {
             $data['state'] = false;
             $data['msg'] = '链接不存在或者已失效，请重新检查！';
-        }else {
+        } else {
             $em = $this->getDoctrine()->getManager();
             $sendEmails = $em->getRepository('PublicBundle\Entity\SendEmails');
             $emailInfo = $sendEmails->findOneByToken($token);
@@ -40,7 +40,7 @@ class IndexController extends Controller
             if ($time >= $lifeTime) {
                 $data['state'] = false;
                 $data['msg'] = '链接不存在或者已失效，请重新检查！';
-            }else{
+            } else {
                 $data['state'] = true;
             }
         }
