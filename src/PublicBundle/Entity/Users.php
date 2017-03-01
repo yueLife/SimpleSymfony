@@ -9,11 +9,17 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 /**
  * Users
  *
- * @ORM\Table(name="simple_sf_users")
+ * @ORM\Table(name="sy_users")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\UsersRepository")
  */
 class Users implements UserInterface,AdvancedUserInterface, \Serializable
 {
+    public function __construct($ip)
+    {
+        $this->regTime = $this->lastLogin = date('Y/m/d H:i:s', time());
+        $this->regIp = $this->lastIp = $ip;
+    }
+
     /**
      * @var integer
      *
@@ -40,6 +46,13 @@ class Users implements UserInterface,AdvancedUserInterface, \Serializable
     /**
      * @var string
      *
+     * @ORM\Column(name="avatar", type="string")
+     */
+    private $avatar = "avatar.png";
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="password", type="string")
      */
     private $password;
@@ -49,7 +62,7 @@ class Users implements UserInterface,AdvancedUserInterface, \Serializable
      *
      * @ORM\Column(name="role", type="string")
      */
-    private $role;
+    private $role = 'ROLE_ANONYMOUS';
 
     /**
      * @var string
@@ -82,16 +95,23 @@ class Users implements UserInterface,AdvancedUserInterface, \Serializable
     /**
      * @var boolean
      *
+     * @ORM\Column(name="$valid_email", type="boolean")
+     */
+    private $validEmail = false;
+
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="is_active", type="boolean")
      */
-    private $isActive;
+    private $isActive = true;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="is_first_login", type="boolean")
      */
-    private $isFirstLogin;
+    private $isFirstLogin = true;
 
 
     /**
@@ -232,6 +252,29 @@ class Users implements UserInterface,AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Set avatar
+     *
+     * @param string $avatar
+     * @return Users
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar
+     *
+     * @return string
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
      * Set password
      *
      * @param string $password
@@ -367,6 +410,29 @@ class Users implements UserInterface,AdvancedUserInterface, \Serializable
     public function getLastIp()
     {
         return $this->lastIp;
+    }
+
+    /**
+     * Set validEmail
+     *
+     * @param boolean $validEmail
+     * @return Users
+     */
+    public function setValidEmail($validEmail)
+    {
+        $this->validEmail = $validEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get validEmail
+     *
+     * @return boolean
+     */
+    public function getValidEmail()
+    {
+        return $this->validEmail;
     }
 
     /**

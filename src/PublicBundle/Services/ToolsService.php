@@ -8,12 +8,12 @@ class ToolsService
         'getRandCharService',
         'sendEmailService',
     );
-    private $templating;
+    private $template;
     private $mailer;
 
-    public function __construct($templating, $mailer)
+    public function __construct($template, $mailer)
     {
-        $this->templating = $templating;
+        $this->template = $template;
         $this->mailer = $mailer;
     }
 
@@ -47,7 +47,7 @@ class ToolsService
             ->setFrom('wiki@joywell.com.cn')
             ->setTo($emailData['emailAdd'])
             ->setBody(
-                $this->templating->render(
+                $this->template->render(
                     $emailData['view'],
                     $emailData['arr']
                 ),

@@ -37,23 +37,16 @@ class LoginController extends Controller
         $errorMsg = '';
         if ($error) {
             switch ($error->getLine()) {
-                case 42:
-                    $errorMsg = '用户 '.$lastUsername . ' 已被禁用！请联系管理员。'; break;
-                case 73:
-                    $errorMsg = '用户名错误！请重新输入用户名。'; break;
-                case 90:
-                    $errorMsg = '密码错误！请重新输入密码。'; break;
-                default:
-                    $errorMsg = '未知错误！请联系管理员！'; break;
+                case 42: $errorMsg = '用户 ' . $lastUsername . ' 已被禁用！请联系管理员。'; break;
+                case 73: $errorMsg = '用户名错误！请重新输入用户名。'; break;
+                case 90: $errorMsg = '密码错误！请重新输入密码。'; break;
+                default: $errorMsg = '未知错误！请联系管理员！'; break;
             }
         }
 
         return $this->render(
             'PublicBundle:Main:login.html.twig',
-            array(
-                'last_username' => $lastUsername,
-                'errorMsg' => $errorMsg
-            )
+            array('last_username' => $lastUsername, 'errorMsg' => $errorMsg)
         );
     }
 
@@ -74,13 +67,8 @@ class LoginController extends Controller
         $this->get('security.context')->setToken(null);
         // 删除 session中的信息
         $request->getSession()->clear();
-        return $this->render(
-            'PublicBundle:Main:login.html.twig',
-            array(
-                'last_username' => '',
-                'errorMsg' => ''
-            )
-        );
+        // 跳转到公共模块首页
+        return $this->redirect($this->generateUrl('publicIndex'));
     }
 
     /**
@@ -103,14 +91,10 @@ class LoginController extends Controller
         $em->flush();
 
         switch ($_userInfo->getRole()) {
-            case 'ROLE_ADMIN_USER':
-                return $this->redirect($this->generateUrl('adminIndex')); break;
-            case 'ROLE_WORDS_USER':
-                return $this->redirect($this->generateUrl('wordsIndex')); break;
-            case 'ROLE_GOODS_USER':
-                return $this->redirect($this->generateUrl('goodsIndex')); break;
-            default:
-                return $this->redirect($this->generateUrl('publicIndex')); break;
+            case 'ROLE_ADMIN_USER': return $this->redirect($this->generateUrl('adminIndex')); break;
+            case 'ROLE_WORDS_USER': return $this->redirect($this->generateUrl('wordsIndex')); break;
+            case 'ROLE_GOODS_USER': return $this->redirect($this->generateUrl('goodsIndex')); break;
+            default: return $this->redirect($this->generateUrl('publicIndex')); break;
         }
     }
 }

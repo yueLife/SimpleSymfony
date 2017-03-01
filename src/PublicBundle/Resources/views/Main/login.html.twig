@@ -1,4 +1,4 @@
-{% extends "PublicBundle:Global:base_index.html.twig" %}
+{% extends "PublicBundle:Global:baseIndex.html.twig" %}
 
 {% block head %}
     {{ parent() }}
@@ -28,18 +28,13 @@
                 <div class="login-content">
                     <h1> {{ GLOBAL_TITLE }}登录 </h1>
                     <form action="{{ path('loginCheck') }}" class="login-form" method="post">
-                        <div class="alert alert-danger display-hide login-alert">
-                            <button class="close" data-close="alert"></button>
-                            <span> 请输入您的用户名和密码 </span>
+                        {{ messages.alertClose('danger', '请输入您的用户名和密码', 'display-hide login-alert') }}
+                        <div class="row">
+                            {{ forms.divCol('_username', last_username, '', '用户名') }}
+                            {{ forms.divCol('_password', '', 'password', '密码') }}
                         </div>
                         <div class="row">
-                            <div class="col-xs-6">
-                                <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="用户名" name="_username" value="{{ last_username }}" required/> </div>
-                            <div class="col-xs-6">
-                                <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="密码" name="_password" required/> </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-4 col-xs-4">
                                 <div class="rem-password">
                                     <label class="rememberme mt-checkbox mt-checkbox-outline">
                                         <input type="checkbox" name="_remember_me" value="1" /> 记住我
@@ -47,9 +42,12 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-sm-8 text-right">
+                            <div class="col-sm-8 col-xs-8 text-right">
                                 <div class="forgot-password">
                                     <a href="javascript:;" id="forget-password" class="forget-password"> 忘记密码 </a>
+                                </div>
+                                <div class="new-registered">
+                                    <a href="javascript:;" id="new-register" class="new-register"> 注册新账号 </a>
                                 </div>
                                 <button class="btn green login-btn" type="button"> 登录 </button>
                             </div>
@@ -62,13 +60,36 @@
                             <p> 输入您的电子邮件地址来重置您的密码 </p>
                         </div>
                         <div class="form-group">
-                            <input class="form-control placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="邮箱地址" name="email" /> </div>
+                            {{ forms.input('email', '', '', '邮箱地址') }}
+                        </div>
                         <div class="form-actions">
-                            <button type="button" id="back-btn" class="btn green btn-outline"> 返回 </button>
+                            <button type="button" class="btn green btn-outline back-btn"> 返回 </button>
                             <button type="button" class="btn btn-success uppercase pull-right forgetPasswd-btn"> 提交 </button>
                         </div>
                     </form>
                     <!-- END FORGOT PASSWORD FORM -->
+                    <!-- BEGIN REGISTER PASSWORD FORM -->
+                    <form class="register-form" action="javascript:;" method="post">
+                        <h3 class="font-green"> 注册账号 </h3>
+                        <div class="alert register-alert">
+                            <p> 输入您的电子邮件地址来注册新账号 </p>
+                        </div>
+                        <div class="row">
+                            {{ forms.divCol('email', 'q', '', '邮箱地址') }}
+                            {{ forms.divCol('username', 'q', '', '用户名') }}
+                        </div>
+                        <div class="row">
+                            {{ forms.divCol('password', 'qwe', 'password', '密码') }}
+                            {{ forms.divCol('rePassword', 'qwe', 'password', '确认密码') }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <button type="button" class="btn green btn-outline back-btn"> 返回 </button>
+                                <button type="button" class="btn btn-success uppercase pull-right new-register-btn"> 注册 </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- END REGISTER PASSWORD FORM -->
                 </div>
                 <div class="login-footer">
                     <div class="row bs-reset">
@@ -119,7 +140,7 @@
     <script type="text/javascript">
         $(function(){
             {% if errorMsg %}
-            $('.login-alert').fadeIn().find('span').html('{{ errorMsg }}');
+            $('.login-alert').fadeIn().addClass('alert-danger').removeClass('alert-success').find('p').html('{{ errorMsg }}');
             {% endif %}
             $(document).on('click', '.login-btn', function() {
                 var errorFlag = true;
@@ -130,25 +151,48 @@
                         return false;
                     }
                 });
-                errorFlag ? $(this).attr('type', 'submit') : $('.login-alert').fadeIn().find('span').html('请输入您的用户名和密码！');
+                errorFlag ? $(this).attr('type', 'submit') : $('.login-alert').fadeIn().addClass('alert-danger').removeClass('alert-success').find('p').html('请输入您的用户名和密码！');
             });
             $(document).on('click', '.forgetPasswd-btn', function(event) {
-                var email = $('input[name="email"]').val();
+                var email = $('.forget-form input[name="email"]').val();
                 if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
-                    $('.forget-alert').attr('class', 'alert forget-alert alert-danger').find('p').html(' 邮箱格式不正确！请重新输入 ');
-                    $('input[name="email"]').focus();
+                    $('.forget-alert').fadeIn().addClass('alert-danger').removeClass('alert-success').find('p').html('邮箱格式不正确！请重新输入!');
+                    $('.forget-form input[name="email"]').focus();
                 } else {
                     $.ajax({
-                        url: '{{ path('forgetPassword') }}',
+                        url: '{{ path('forgetPasswordAjax') }}',
                         type: 'post',
                         dataType: 'json',
-                        data: {'email': email},
+                        data: $('.forget-form').serialize(),
                     }).done(function(data) {
-                        var _data = data.state ? 'alert-success' : 'alert-danger'
-                        $('.forget-alert').attr('class', 'alert forget-alert ' + _data).find('p').html(' ' + data.msg + ' ');
+                        var _data = data.state ? 'success' : 'danger'
+                        $('.forget-alert').attr('class', 'alert forget-alert ' + _data).find('p').html(data.msg );
                     }).fail(function() {
                         console.log("未知错误！");
                     })
+                }
+            });
+            $(document).on('click', '.new-register-btn', function (event) {
+                var obj = new Object();
+                $(".register-form input").each(function (index, el) {
+                    obj[$(this).attr('name')] = $(this).val();
+                });
+                var reg = /^[\w-]+@[\w-]+(\.[\w-]+)+$/;
+                if (!reg.test(obj['email'])) {
+                    $('.register-alert').fadeIn().addClass('alert-danger').removeClass('alert-success').find('p').html('邮箱格式不正确！请重新输入!');
+                }else if (obj['password'] != obj['rePassword']) {
+                    $('.register-alert').fadeIn().addClass('alert-danger').removeClass('alert-success').find('p').html('两次密码不一致，请重新输入！');
+                }else{
+                    $.ajax({
+                        url: '{{ path('registerAjax') }}',
+                        type: 'post',
+                        dataType: 'json',
+                        data: $('.register-form').serialize(),
+                    }).done(function (data) {
+                        console.log(data);
+                    }).fail(function (data) {
+                        console.log("未知错误！");
+                    });
                 }
             });
         })

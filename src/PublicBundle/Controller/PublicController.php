@@ -27,27 +27,32 @@ class PublicController extends Controller
      */
     public function verifyTokenAction(Request $request)
     {
-        $token = $email = $request->get('token');
-        if (!$token) {
-            $data['state'] = false;
-            $data['msg'] = '链接不存在或者已失效，请重新检查！';
-        } else {
-            $em = $this->getDoctrine()->getManager();
-            $sendEmails = $em->getRepository('PublicBundle\Entity\SendEmails');
-            $emailInfo = $sendEmails->findOneByToken($token);
-            $time = time();
-            $lifeTime = $emailInfo->getCreateTime() + $emailInfo->getLifeTime();
-            if ($time >= $lifeTime) {
-                $data['state'] = false;
-                $data['msg'] = '链接不存在或者已失效，请重新检查！';
-            } else {
-                $data['state'] = true;
-            }
-        }
+        $data['title'] = '邮箱验证-';
+        $data['token'] = $request->get('token');
 
-        return array(
-            'token' => $token,
-            'data'=> $data
-        );
+        $em = $this->getDoctrine()->getManager();
+        $sendEmailsEm = $em->getRepository('PublicBundle\Entity\SendEmails');
+
+        $emailInfo = $sendEmailsEm->findOneByToken($data['token']);
+        $lifeTime = $emailInfo->getCreateTime() + $emailInfo->getLifeTime();
+        if (time() >= $lifeTime) {
+            $data['msg'] = '链接不存在或者已失效，请重新申请！';
+            return $data;
+        }
+        $data['type'] = base64_decode($request->get('type'));
+
+        switch ($data['type']) {
+            case 'register':
+                $uid = $sendEmailsEm->findOneByToken($data['token'])->getUid();
+                $usersEm = $em->getRepository('PublicBundle\Entity\Users');
+                $usersEm->findOneById($uid)->setValidEmail(true);
+                $em->flush();
+                $data['msg'] = '邮箱验证成功，请重新登录！'; break;
+            case 'forgetPassword':
+                $data['msg'] = '邮箱验证成功，请重置您的密码！';break;
+            default:
+                $data['msg'] = '链接不存在或者已失效，请重新申请！';break;
+        }
+        return $data;
     }
 }

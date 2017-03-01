@@ -51,6 +51,7 @@
           .user-login-5 .login-container > .login-content > .login-form .form-control:focus {
             outline: 0; }
         .user-login-5 .login-container > .login-content > .login-form .forgot-password,
+        .user-login-5 .login-container > .login-content > .login-form .new-registered,
         .user-login-5 .login-container > .login-content > .login-form .login-button {
           display: inline-block; }
         .user-login-5 .login-container > .login-content > .login-form .rem-password {
@@ -59,14 +60,18 @@
             margin: 0; }
           .user-login-5 .login-container > .login-content > .login-form .rem-password > .rem-checkbox {
             border-color: #a4aab2; }
-        .user-login-5 .login-container > .login-content > .login-form .forgot-password {
+        .user-login-5 .login-container > .login-content > .login-form .forgot-password,
+        .user-login-5 .login-container > .login-content > .login-form .new-registered {
           margin-right: 1em; }
-          .user-login-5 .login-container > .login-content > .login-form .forgot-password > a {
+          .user-login-5 .login-container > .login-content > .login-form .forgot-password > a,
+          .user-login-5 .login-container > .login-content > .login-form .new-registered > a {
             color: #a4aab2; }
-            .user-login-5 .login-container > .login-content > .login-form .forgot-password > a:hover {
+            .user-login-5 .login-container > .login-content > .login-form .forgot-password > a:hover,
+            .user-login-5 .login-container > .login-content > .login-form .new-registered > a:hover {
               color: #337ab7;
               text-decoration: none; }
-            .user-login-5 .login-container > .login-content > .login-form .forgot-password > a:focus {
+            .user-login-5 .login-container > .login-content > .login-form .forgot-password > a:focus,
+            .user-login-5 .login-container > .login-content > .login-form .new-registered > a:focus {
               color: #a4aab2;
               text-decoration: none; }
     .user-login-5 .login-container > .login-footer {
@@ -139,7 +144,3 @@
           margin-right: 0.5em; }
     .user-login-5 .alert {
       margin-top: -20px; } }
-
-@media (max-width: 640px) {
-  .user-login-5 .login-container > .login-content .text-right {
-    text-align: left; } }

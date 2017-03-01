@@ -7,11 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SendEmails
  *
- * @ORM\Table(name="simple_sf_send_emails")
+ * @ORM\Table(name="sy_send_emails")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\SendEmailsRepository")
  */
 class SendEmails
 {
+    public function __construct()
+    {
+        $this->createTime = time();
+    }
     /**
      * @var integer
      *
@@ -52,6 +56,13 @@ class SendEmails
     /**
      * @var string
      *
+     * @ORM\Column(name="validType", type="string")
+     */
+    private $validType;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="salt", type="string", length=4)
      */
     private $salt;
@@ -66,9 +77,9 @@ class SendEmails
     /**
      * @var integer
      *
-     * @ORM\Column(name="lifetime", type="integer", options={"default":86400}))
+     * @ORM\Column(name="lifetime", type="integer", options={"default":3600}))
      */
-    private $lifetime = 86400;
+    private $lifetime = 3600;
 
 
     /**
@@ -171,6 +182,29 @@ class SendEmails
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set validType
+     *
+     * @param string $validType
+     * @return SendEmails
+     */
+    public function setValidType($validType)
+    {
+        $this->validType = $validType;
+
+        return $this;
+    }
+
+    /**
+     * Get validType
+     *
+     * @return string
+     */
+    public function getValidType()
+    {
+        return $this->validType;
     }
 
     /**

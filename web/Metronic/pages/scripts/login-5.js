@@ -71,11 +71,19 @@ var Login = function() {
         $('#forget-password').click(function(){
             $('.login-form').hide();
             $('.forget-form').show();
+            $('.register-form').hide();
         });
 
-        $('#back-btn').click(function(){
+        $('#new-register').click(function(){
+            $('.login-form').hide();
+            $('.forget-form').hide();
+            $('.register-form').show();
+        });
+
+        $('.back-btn').click(function(){
             $('.login-form').show();
             $('.forget-form').hide();
+            $('.register-form').hide();
         });
     }
 
@@ -101,6 +109,7 @@ var Login = function() {
             );
 
             $('.forget-form').hide();
+            $('.register-form').hide();
 
         }
 

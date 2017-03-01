@@ -2,7 +2,6 @@
 
 {% block head %}
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" type="text/css" />
     <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/font-awesome/css/font-awesome.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/simple-line-icons/simple-line-icons.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/bootstrap/css/bootstrap.min.css') }}" type="text/css" />
@@ -33,7 +32,7 @@
 
     {% block javascripts %}
         <!-- BEGIN CORE PLUGINS -->
-        <script src="{{ asset(METRONIC_GLOBAL~'plugins/jquery.min.js') }}" type="text/javascript"></script>
+        <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
         <script src="{{ asset(METRONIC_GLOBAL~'plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
         <script src="{{ asset(METRONIC_GLOBAL~'plugins/js.cookie.min.js') }}" type="text/javascript"></script>
         <script src="{{ asset(METRONIC_GLOBAL~'plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js') }}" type="text/javascript"></script>
@@ -48,6 +47,7 @@
 
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="{{ asset(METRONIC_GLOBAL~'scripts/app.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset(PUBLIC_JS~'globalFunction.js') }}" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
 
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
