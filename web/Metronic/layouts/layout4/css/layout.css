@@ -1270,7 +1270,7 @@ Page footer
   .page-sidebar-fixed.page-sidebar-closed .page-footer {
     margin-left: 54px; }
   .page-sidebar-fixed .page-footer {
-    margin-left: 255px;
+    margin-left: 0px;
     padding: 10px 20px 10px 20px; }
   /* Boxed page */
   .page-boxed .page-footer {

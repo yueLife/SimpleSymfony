@@ -14,7 +14,7 @@ class PublicController extends Controller
 {
     /**
      * @Route("/index", name="publicIndex")
-     * @Template("PublicBundle:Main:index.html.twig")
+     * @Template("PublicBundle:Main:publicIndex.html.twig")
      */
     public function indexAction()
     {
@@ -29,9 +29,10 @@ class PublicController extends Controller
     {
         $data['title'] = '邮箱验证-';
         $data['token'] = $request->get('token');
+        $data['type'] = base64_decode($request->get('type'));
 
         $em = $this->getDoctrine()->getManager();
-        $sendEmailsEm = $em->getRepository('PublicBundle\Entity\SendEmails');
+        $sendEmailsEm = $em->getRepository('PublicBundle:SendEmails');
 
         $emailInfo = $sendEmailsEm->findOneByToken($data['token']);
         $lifeTime = $emailInfo->getCreateTime() + $emailInfo->getLifeTime();
@@ -39,12 +40,11 @@ class PublicController extends Controller
             $data['msg'] = '链接不存在或者已失效，请重新申请！';
             return $data;
         }
-        $data['type'] = base64_decode($request->get('type'));
 
         switch ($data['type']) {
             case 'register':
                 $uid = $sendEmailsEm->findOneByToken($data['token'])->getUid();
-                $usersEm = $em->getRepository('PublicBundle\Entity\Users');
+                $usersEm = $em->getRepository('PublicBundle:Users');
                 $usersEm->findOneById($uid)->setValidEmail(true);
                 $em->flush();
                 $data['msg'] = '邮箱验证成功，请重新登录！'; break;
@@ -54,5 +54,31 @@ class PublicController extends Controller
                 $data['msg'] = '链接不存在或者已失效，请重新申请！';break;
         }
         return $data;
+    }
+
+    /**
+     * 根据用户登录信息获取sidebar
+     */
+    public function getSidebarAction($route)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $navMenusEm = $em->getRepository('PublicBundle:NavMenus');
+        $role = $this->get('security.context')->getToken()->getUser()->getRole();
+        $mainMenus = $navMenusEm->findBy(array('role'=>$role, 'pid'=>0));
+        $menuPid = $navMenusEm->findOneByRoute($route)->getPid();
+
+        foreach ($mainMenus as $key => $menu) {
+            $subMenus[$menu->getId()] = $navMenusEm->findBy(
+                array('role'=>$role, 'pid'=>$menu->getId()));
+        }
+
+        return $this->render(
+            'PublicBundle:Layout:sidebar.html.twig',
+            array(
+                'mainMenus' => $mainMenus,
+                'subMenus' => $subMenus,
+                'route' => $route,
+                'pid' => $menuPid,
+            ));
     }
 }

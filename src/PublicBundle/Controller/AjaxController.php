@@ -25,7 +25,7 @@ class AjaxController extends Controller
         $email = $request->get('email');
 
         $em = $this->getDoctrine()->getManager();
-        $usersEm = $em->getRepository('PublicBundle\Entity\Users');
+        $usersEm = $em->getRepository('PublicBundle:Users');
         $userInfo = $usersEm->findOneByEmail($email);
 
         if (!$userInfo) {
@@ -66,8 +66,8 @@ class AjaxController extends Controller
         $token = $request->get('token');
         $password = $request->get('password');
         $em = $this->getDoctrine()->getManager();
-        $sendEmailEm = $em->getRepository('PublicBundle\Entity\SendEmails');
-        $usersEm = $em->getRepository('PublicBundle\Entity\Users');
+        $sendEmailEm = $em->getRepository('PublicBundle:SendEmails');
+        $usersEm = $em->getRepository('PublicBundle:Users');
 
         $uid = $sendEmailEm->findOneByToken($token)->getUid();
         $usersEm->findOneById($uid)->setPassword(password_hash($password, PASSWORD_BCRYPT));
@@ -87,7 +87,7 @@ class AjaxController extends Controller
         $rePassword = $request->get('rePassword');
 
         $em = $this->getDoctrine()->getManager();
-        $usersEm = $em->getRepository('PublicBundle\Entity\Users');
+        $usersEm = $em->getRepository('PublicBundle:Users');
 
         if (!preg_match('/^[\w-]+@[\w-]+(\.[\w-]+)+$/', $email)) {
             return new JsonResponse(array('state' => false, 'msg' => '邮箱格式不正确，请重新输入！'));

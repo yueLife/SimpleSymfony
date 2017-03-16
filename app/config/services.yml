@@ -3,6 +3,7 @@
 parameters:
 #    parameter_name: value
     toolsService.class: PublicBundle\Services\ToolsService
+    navMenusService.class: PublicBundle\Services\NavMenusService
 
 services:
 #    service_name:
@@ -11,3 +12,6 @@ services:
     toolsService:
         class:     %toolsService.class%
         arguments: [@Templating, @Mailer]
+    navMenusService:
+        class:     %navMenusService.class%
+        arguments: [@doctrine, @session]

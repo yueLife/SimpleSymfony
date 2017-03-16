@@ -80,7 +80,7 @@ class LoginController extends Controller
     {
         $_userInfo = $this->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-        $userInfo = $em->getRepository('PublicBundle\Entity\Users')->findOneById($_userInfo->getId());
+        $userInfo = $em->getRepository('PublicBundle:Users')->findOneById($_userInfo->getId());
 
         // 存储信息到session
         $session = $request->getSession();

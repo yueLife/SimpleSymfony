@@ -95,7 +95,7 @@ class Users implements UserInterface,AdvancedUserInterface, \Serializable
     /**
      * @var boolean
      *
-     * @ORM\Column(name="$valid_email", type="boolean")
+     * @ORM\Column(name="valid_email", type="boolean")
      */
     private $validEmail = false;
 
