@@ -1,0 +1,35 @@
+<!-- BEGIN SIDEBAR -->
+<div class="page-sidebar-wrapper">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar navbar-collapse collapse">
+        <!-- BEGIN SIDEBAR MENU -->
+        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            {% for mainMenu in mainMenus %}
+            <li class="nav-item start{% if mainMenu.id == pid %} active open{% endif %}">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="iconfont icon-{{ mainMenu.icon }}"></i>
+                    <span class="title">{{ mainMenu.title }}</span>
+                    <span class="selected"></span>
+                    {% if mainMenu.children|default('') %}
+                    <span class="arrow open"></span>
+                    {% endif %}
+                </a>
+                <ul class="sub-menu">
+                    {% for subMenu in subMenus[mainMenu.id] %}
+                    <li class="nav-item start{% if subMenu.route == route %} active open{% endif %}">
+                        <a href="#{{ subMenu.route }}" class="nav-link ">
+                            <i class="iconfont icon-{{ subMenu.icon }}"></i>
+                            <span class="title">{{ subMenu.title }}</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+        <!-- END SIDEBAR MENU -->
+    </div>
+    <!-- END SIDEBAR -->
+</div>
+<!-- END SIDEBAR -->

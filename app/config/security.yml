@@ -1,11 +1,13 @@
 # To get started with security, check out the documentation:
-# http://symfony.com/doc/current/security.html
+# http://symfony.com/doc/current/book/security.html
 security:
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        users_provider:
+            entity:
+                class: PublicBundle:Users
+                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,12 +15,38 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        # main:
+        #     anonymous: ~
+        #     # activate different ways to authenticate
+
+        #     http_basic: ~
+        #     # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+        login_firewall:
+            pattern:   ^/(login$|public/*)
             anonymous: ~
-            # activate different ways to authenticate
+        secured_area:
+            pattern:   ^/
+            form_login:
+                login_path: /login
+                check_path: /loginCheck
+                # 登录后的目标页
+                default_target_path: /loginSet
+                # 登录后是否总是跳向指定目标页
+                always_use_default_target_path: true
+            remember_me:
+                key:      "%secret%"
+                lifetime: 604800 # A week
+                path:     /
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            provider: users_provider
+
+    access_control:
+        - { path: ^/admin*, roles: ROLE_ADMIN_USER }
+        - { path: ^/words*, roles: [ROLE_WORDS_USER, ROLE_ADMIN_USER] }
+        - { path: ^/goods*, roles: [ROLE_GOODS_USER, ROLE_ADMIN_USER] }
+
+    encoders:
+        PublicBundle\Entity\Users:
+            algorithm:  bcrypt

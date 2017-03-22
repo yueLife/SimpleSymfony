@@ -1,0 +1,13 @@
+{% macro alertSkip(type, msg, url, class='display-hide') %}
+    <div class="alert alert-{{ type }} {{ class }}">
+        <p> {{ msg }} </p>
+        <p>3 秒后跳转！<a href="{{ path(url) }}">立即前往&gt;&gt;</a></p>
+    </div>
+{% endmacro %}
+
+{% macro alertClose(type, msg, class='display-hide') %}
+    <div class="alert alert-{{ type }} {{ class }}">
+        <button class="close" data-close="alert"></button>
+        <p> {{ msg }} </p>
+    </div>
+{% endmacro %}

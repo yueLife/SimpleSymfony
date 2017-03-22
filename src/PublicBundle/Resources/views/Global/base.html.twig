@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="{{ asset('bundles/public/images/joywell.ico') }}">
+    <title>{% block title %}{{ title|default('') }}{{ GLOBAL_TITLE }}{% endblock %}</title>
+    {% block head %}{% endblock %}
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/font-awesome/css/font-awesome.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/simple-line-icons/simple-line-icons.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/bootstrap/css/bootstrap.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    {% block pageLevelPluginsStyle %}{% endblock %}
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'css/components-rounded.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset(METRONIC_GLOBAL~'css/plugins.min.css') }}" type="text/css">
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    {% block pageLevelStyles %}{% endblock %}
+    <!-- END PAGE LEVEL STYLES -->
+
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    {% block themeLayoutStyles %}{% endblock %}
+    <!-- END THEME LAYOUT STYLES -->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_9adt831u4y9wl8fr.css" type="text/css">
+    {% block stylesheet %}{% endblock %}
+</head>
+
+{# IMPORT TWIG MACRO #}
+{% import "PublicBundle:Macro:forms.html.twig" as forms %}
+{% import "PublicBundle:Macro:messages.html.twig" as messages %}
+
+{% block body %}{% endblock %}
+
+{% block footer %}
+
+    {% include("PublicBundle:Footer:footer.html.twig") %}
+{% endblock %}
+
+<!-- BEGIN CORE PLUGINS -->
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script src="{{ asset(METRONIC_GLOBAL~'plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset(METRONIC_GLOBAL~'plugins/js.cookie.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset(METRONIC_GLOBAL~'plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset(METRONIC_GLOBAL~'plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset(METRONIC_GLOBAL~'plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset(METRONIC_GLOBAL~'plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+{% block pageLevelPluginsScript %}{% endblock %}
+<!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="{{ asset(METRONIC_GLOBAL~'scripts/app.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset(PUBLIC_JS~'globalFunction.js') }}" type="text/javascript"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+{% block pageLevelScripts %}{% endblock %}
+<!-- END PAGE LEVEL SCRIPTS -->
+
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+{% block themeLayoutScripts %}{% endblock %}
+<!-- END THEME LAYOUT SCRIPTS -->
+{% block javascripts %}{% endblock %}
+</html>

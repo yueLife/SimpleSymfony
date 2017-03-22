@@ -1,3 +1,30 @@
+public:
+    resource: "@PublicBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+goods_pick:
+    resource: "@GoodsPickBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+unused_words:
+    resource: "@UnusedWordsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+admin:
+    resource: "@AdminBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+
+loginRoute:
+  path: /login
+  defaults: { _controller: PublicBundle:Login:login }
+
+loginCheck:
+  path: /loginCheck

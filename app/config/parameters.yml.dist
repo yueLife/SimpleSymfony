@@ -17,3 +17,12 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # twigs global arguments
+    twigArgus:
+        GLOBAL_TITLE:     "上海XXXX"
+        COPYWRITE:        "技术支持：上海XXXX"
+        METRONIC_APPS:    "bundles/public/metronic/assets/apps/"
+        METRONIC_GLOBAL:  "bundles/public/metronic/assets/global/"
+        METRONIC_LAYOUTS: "bundles/public/metronic/assets/layouts/"
+        METRONIC_PAGES:   "bundles/public/metronic/assets/pages/"
